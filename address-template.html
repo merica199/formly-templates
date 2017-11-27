@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Twitter bootstrap -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+
+    <!-- apiCheck is used by formly to validate its api -->
+    <script src="//npmcdn.com/api-check@latest/dist/api-check.js"></script>
+    <!-- This is the latest version of angular (at the time this template was created) -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
+
+    <!-- Angular-UI Bootstrap has tabs directive we want -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.0.3/ui-bootstrap-tpls.js"></script>
+
+    <!-- This is the current state of master for formly core. -->
+    <script src="//npmcdn.com/angular-formly@latest/dist/formly.js"></script>
+    <!-- This is the current state of master for the bootstrap templates -->
+    <script src="//npmcdn.com/angular-formly-templates-bootstrap@latest/dist/angular-formly-templates-bootstrap.js"></script>
+
+    <style>
+    body {
+        margin: 20px
+    }
+
+    /*.formly-field {
+        margin-bottom:16px;
+    }*/
+    </style>
+
+    <title>Formly - U.S. Address Template</title>
+</head>
+
+<body ng-app="formlyExample" ng-controller="MainCtrl as vm">
+    <body ng-app="formlyExample" ng-controller="MainCtrl as vm">
+        <div>
+            <h1>Angular-Formly Address Template</h1>
+            <form ng-submit="vm.onSubmit()" name="vm.form" novalidate>
+                <formly-form model="vm.model" fields="vm.fields" options="vm.options" form="vm.form">
+                    <button type="submit" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
+                    <button type="button" class="btn btn-default" ng-click="vm.options.resetModel()">Reset</button>
+                </formly-form>
+            </form>
+            <h2>Form Data</h2>
+            <pre>{{vm.model | json}}</pre>
+        </div>
+
+
+        <script>
+        /* global angular */
+        (function() {
+
+            'use strict';
+
+            var app = angular.module('formlyExample', ['formly', 'formlyBootstrap']);
+
+
+            app.controller('MainCtrl', function MainCtrl(formlyVersion) {
+                var vm = this;
+                // funcation assignment
+                vm.onSubmit = onSubmit;
+
+                // variable assignment
+
+                vm.exampleTitle = 'Advanced Layout'; // add this
+                vm.env = {
+                    angularVersion: angular.version.full,
+                    formlyVersion: formlyVersion
+                };
+
+                vm.model = {};
+
+                vm.fields = [
+                    {
+                        className: 'section-label',
+                        template: '<hr /><div><strong>Address:</strong></div>'
+                    },
+                    {
+                        className: 'row',
+                        fieldGroup: [
+                            {
+                                className: 'col-xs-9',
+                                type: 'input',
+                                key: 'address1_street',
+                                defaultValue: "1600 Pennsylvania Ave",
+                                templateOptions: {
+                                    label: 'Street'
+                                }
+
+                            }
+                        ]
+                    },
+                    {
+                        className: 'row',
+                        fieldGroup: [
+
+                            {
+                                className: 'col-xs-9',
+                                type: 'input',
+                                key: 'addresss1_line2',
+                                defaultValue: "Suite D",
+                                templateOptions: {
+                                    label: 'Line 2'
+                                }
+
+                            },
+                        ]
+                    },
+                    {
+                        className: 'row',
+                        fieldGroup: [
+                            {
+                                className: 'col-xs-3',
+                                type: 'input',
+                                key: 'address1_city',
+                                defaultValue: "Washington",
+                                templateOptions: {
+                                    label: 'City'
+                                }
+                            },
+                            {
+                                className: 'col-xs-3',
+                                type: 'input',
+                                key: 'address1_zip',
+                                defaultValue: 10110,
+                                templateOptions: {
+                                    type: 'number',
+                                    label: 'Zip',
+                                    max: 99999,
+                                    min: 0,
+                                    pattern: '\\d{5}'
+                                }
+                            },
+                            {
+                                className: 'col-xs-3',
+                                type: 'select',
+                                key: 'address1_state',
+                                defaultValue: 'DC',
+                                templateOptions: {
+                                    label: 'State',
+                                    options: [
+                                        {
+                                            "name":"Alabama",
+                                            "value":"AL"
+                                        },
+                                        {
+                                            "name":"Alaska",
+                                            "value":"AK"
+                                        },
+                                        {
+                                            "name":"Arizona",
+                                            "value":"AZ"
+                                        },
+                                        {
+                                            "name":"Arkansas",
+                                            "value":"AR"
+                                        },
+                                        {
+                                            "name":"California",
+                                            "value":"CA"
+                                        },
+                                        {
+                                            "name":"Colorado",
+                                            "value":"CO"
+                                        },
+                                        {
+                                            "name":"Connecticut",
+                                            "value":"CT"
+                                        },
+                                        {
+                                            "name":"Delaware",
+                                            "value":"DE"
+                                        },
+                                        {
+                                            "name":"District of Columbia",
+                                            "value":"DC"
+                                        },
+                                        {
+                                            "name":"Florida",
+                                            "value":"FL"
+                                        },
+                                        {
+                                            "name":"Georgia",
+                                            "value":"GA"
+                                        },
+                                        {
+                                            "name":"Hawaii",
+                                            "value":"HI"
+                                        },
+                                        {
+                                            "name":"Idaho",
+                                            "value":"ID"
+                                        },
+                                        {
+                                            "name":"Illinois",
+                                            "value":"IL"
+                                        },
+                                        {
+                                            "name":"Indiana",
+                                            "value":"IN"
+                                        },
+                                        {
+                                            "name":"Iowa",
+                                            "value":"IA"
+                                        },
+                                        {
+                                            "name":"Kansa",
+                                            "value":"KS"
+                                        },
+                                        {
+                                            "name":"Kentucky",
+                                            "value":"KY"
+                                        },
+                                        {
+                                            "name":"Lousiana",
+                                            "value":"LA"
+                                        },
+                                        {
+                                            "name":"Maine",
+                                            "value":"ME"
+                                        },
+                                        {
+                                            "name":"Maryland",
+                                            "value":"MD"
+                                        },
+                                        {
+                                            "name":"Massachusetts",
+                                            "value":"MA"
+                                        },
+                                        {
+                                            "name":"Michigan",
+                                            "value":"MI"
+                                        },
+                                        {
+                                            "name":"Minnesota",
+                                            "value":"MN"
+                                        },
+                                        {
+                                            "name":"Mississippi",
+                                            "value":"MS"
+                                        },
+                                        {
+                                            "name":"Missouri",
+                                            "value":"MO"
+                                        },
+                                        {
+                                            "name":"Montana",
+                                            "value":"MT"
+                                        },
+                                        {
+                                            "name":"Nebraska",
+                                            "value":"NE"
+                                        },
+                                        {
+                                            "name":"Nevada",
+                                            "value":"NV"
+                                        },
+                                        {
+                                            "name":"New Hampshire",
+                                            "value":"NH"
+                                        },
+                                        {
+                                            "name":"New Jersey",
+                                            "value":"NJ"
+                                        },
+                                        {
+                                            "name":"New Mexico",
+                                            "value":"NM"
+                                        },
+                                        {
+                                            "name":"New York",
+                                            "value":"NY"
+                                        },
+                                        {
+                                            "name":"North Carolina",
+                                            "value":"NC"
+                                        },
+                                        {
+                                            "name":"North Dakota",
+                                            "value":"ND"
+                                        },
+                                        {
+                                            "name":"Ohio",
+                                            "value":"OH"
+                                        },
+                                        {
+                                            "name":"Oklahoma",
+                                            "value":"OK"
+                                        },
+                                        {
+                                            "name":"Oregon",
+                                            "value":"OR"
+                                        },
+                                        {
+                                            "name":"Pennsylvania",
+                                            "value":"PA"
+                                        },
+                                        {
+                                            "name":"Rhode Island",
+                                            "value":"RI"
+                                        },
+                                        {
+                                            "name":"South Carolina",
+                                            "value":"SC"
+                                        },
+                                        {
+                                            "name":"South Dakota",
+                                            "value":"SD"
+                                        },
+                                        {
+                                            "name":"Tennessee",
+                                            "value":"TN"
+                                        },
+                                        {
+                                            "name":"Texas",
+                                            "value":"TX"
+                                        },
+                                        {
+                                            "name":"Utah",
+                                            "value":"UT"
+                                        },
+                                        {
+                                            "name":"Vermont",
+                                            "value":"VT"
+                                        },
+                                        {
+                                            "name":"Virginia",
+                                            "value":"VA"
+                                        },
+                                        {
+                                            "name":"Washington",
+                                            "value":"WA"
+                                        },
+                                        {
+                                            "name":"West Virginia",
+                                            "value":"WV"
+                                        },
+                                        {
+                                            "name":"Wisconsin",
+                                            "value":"WI"
+                                        },
+                                        {
+                                            "name":"Wyoming",
+                                            "value":"WY"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+
+                ];
+
+                vm.originalFields = angular.copy(vm.fields);
+
+                // function definition
+                function onSubmit() {
+                    alert(JSON.stringify(vm.model), null, 2);
+                }
+            });
+
+        })();
+        </script>
+
+    </body>
+
+    </html>
