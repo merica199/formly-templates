@@ -49,14 +49,14 @@
 
                 formlyConfigProvider.setType([
                     {
-                        name: 'phone',
+                        name: 'ssn',
                         extends: 'input',
-                        templateUrl: "phone.html",
+                        templateUrl: "ssn.html",
                         defaultOptions: {
                             validators: {
                               phone: function(viewValue, modelValue) {
                                 var value = modelValue || viewValue;
-                                return /(\d{1,3}){2}\d{4}/.test(value);
+                                return /\d{9}/.test(value);
                               }
                             },
                         }
@@ -70,7 +70,7 @@
 
                 vm.onSubmit = onSubmit;
 
-                vm.template = 'Phone Number';
+                vm.template = 'Social Security Number';
 
                 vm.env = {
                     angularVersion: angular.version.full,
@@ -85,11 +85,11 @@
                         fieldGroup: [
                             {
                                 className: 'col-md-6',
-                                key: 'phone1',
-                                type: 'phone',
-                            //    defaultValue: 1234567890,
+                                key: 'ssn1',
+                                type: 'ssn',
+                            //    defaultValue: 123456789,
                                 templateOptions: {
-                                    label: 'Phone Number'
+                                    label: 'Your SSN'
                                 }
 
                             }
@@ -110,7 +110,7 @@
     </body>
 
     <!-- Custom Templates  -->
-    <script type="text/ng-template" id="phone.html">
+    <script type="text/ng-template" id="ssn.html">
         <div class="form-group">
                 <div>
                     <input type="text"
@@ -118,7 +118,7 @@
                     ng-value="option[to.valueProp || 'value']"
                     ng-model="model[options.key]"
                     class="form-control"
-                    ui-mask="(999) 999-9999"
+                    ui-mask="999-99-9999"
                     ui-mask-placeholder
                     ui-mask-placeholder-char="_"/>
                 </div>

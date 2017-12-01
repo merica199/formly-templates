@@ -47,21 +47,22 @@
 
             var app = angular.module('formlyTemplate', ['formly', 'formlyBootstrap', 'ui.bootstrap', 'ui.mask'], function config(formlyConfigProvider) {
 
-                formlyConfigProvider.setType([
-                    {
-                        name: 'phone',
-                        extends: 'input',
-                        templateUrl: "phone.html",
-                        defaultOptions: {
-                            validators: {
-                              phone: function(viewValue, modelValue) {
-                                var value = modelValue || viewValue;
-                                return /(\d{1,3}){2}\d{4}/.test(value);
-                              }
-                            },
+                formlyConfigProvider.setType({
+                      name: 'ipAddress',
+                      extends: 'input',
+                      defaultOptions: {
+                        validators: {
+                          ipAddress: function(viewValue, modelValue) {
+                            var value = modelValue || viewValue;
+                            return /(\d{1,3}\.){3}\d{1,3}/.test(value);
+                          }
+                        },
+                        templateOptions: {
+                          label: 'IP Address',
+                          placeholder: 'Enter a valid ipAddress!'
                         }
-                    }
-                ]);
+                      }
+                });
 
         });
 
@@ -70,7 +71,7 @@
 
                 vm.onSubmit = onSubmit;
 
-                vm.template = 'Phone Number';
+                vm.template = 'IP Address';
 
                 vm.env = {
                     angularVersion: angular.version.full,
@@ -85,11 +86,10 @@
                         fieldGroup: [
                             {
                                 className: 'col-md-6',
-                                key: 'phone1',
-                                type: 'phone',
-                            //    defaultValue: 1234567890,
+                                key: 'text',
+                                type: 'ipAddress',
                                 templateOptions: {
-                                    label: 'Phone Number'
+                                    label: 'Your IP Address'
                                 }
 
                             }
@@ -108,20 +108,4 @@
         })();
         </script>
     </body>
-
-    <!-- Custom Templates  -->
-    <script type="text/ng-template" id="phone.html">
-        <div class="form-group">
-                <div>
-                    <input type="text"
-                    id="{{id + '_'+ $index}}"
-                    ng-value="option[to.valueProp || 'value']"
-                    ng-model="model[options.key]"
-                    class="form-control"
-                    ui-mask="(999) 999-9999"
-                    ui-mask-placeholder
-                    ui-mask-placeholder-char="_"/>
-                </div>
-        </div>
-    </script>
 </html>
