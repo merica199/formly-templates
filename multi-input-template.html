@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- Twitter bootstrap -->
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+        <!-- apiCheck is used by formly to validate its api -->
+        <script src="//npmcdn.com/api-check@latest/dist/api-check.js"></script>
+        <!-- This is the latest version of angular (at the time this template was created) -->
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
+        <!-- Angular-UI Bootstrap has tabs directive we want -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.0.3/ui-bootstrap-tpls.js"></script>
+        <!-- This is the current state of master for formly core. -->
+        <script src="//npmcdn.com/angular-formly@latest/dist/formly.js"></script>
+        <!-- This is the current state of master for the bootstrap templates -->
+        <script src="//npmcdn.com/angular-formly-templates-bootstrap@latest/dist/angular-formly-templates-bootstrap.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-mask/1.8.7/mask.js"></script>
+        <style>
+        body {
+            margin: 20px
+        }
+        </style>
+
+        <title>Formly-Template</title>
+    </head>
+
+    <body ng-app="formlyTemplate" ng-controller="MainCtrl as vm">
+        <div>
+            <h1>Angular-Formly Template: {{::vm.template}}</h1>
+            <hr />
+            <form ng-submit="vm.onSubmit()" name="vm.form" novalidate>
+                <formly-form model="vm.model" fields="vm.fields" options="vm.options" form="vm.form">
+                    <button type="submit" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
+                </formly-form>
+            </form>
+            <br>
+            <h2>Form Data</h2>
+            <pre>{{vm.model | json}}</pre>
+        </div>
+
+
+        <script>
+        /* global angular */
+        (function() {
+            'use strict';
+
+            var app = angular.module('formlyTemplate', ['formly', 'formlyBootstrap', 'ui.bootstrap', 'ui.mask'], function config(formlyConfigProvider) {
+
+                formlyConfigProvider.setType([
+                    {
+                        name: 'multiInput',
+                        templateUrl: 'multiInput.html',
+                        defaultOptions: {
+                            noFormControl: true,
+                            wrapper: ['bootstrapLabel'],
+                            templateOptions: {
+                                inputOptions: {
+                                    wrapper: null
+                                }
+                            }
+                        },
+                        controller: ['$scope', function($scope) {
+                            $scope.copyItemOptions = copyItemOptions;
+
+                            function copyItemOptions() {
+                                return angular.copy($scope.to.inputOptions);
+                            }
+                        }]
+                    }
+                ]);
+
+        });
+
+            app.controller('MainCtrl', function MainCtrl(formlyVersion) {
+                var vm = this;
+
+                vm.onSubmit = onSubmit;
+
+                vm.template = 'Multiple Inputs';
+
+                vm.env = {
+                    angularVersion: angular.version.full,
+                    formlyVersion: formlyVersion
+                };
+
+                vm.model = {
+                    inputs: [
+                       'Mickey Mouse',
+                       'Donald Duck',
+                       'Bugs Bunny'
+                     ]
+                };
+
+                vm.fields = [
+                    {
+                        className: 'row',
+                        fieldGroup: [
+                            {
+                                key: 'inputs',
+                                type: 'multiInput',
+                                templateOptions: {
+                                    label: 'Friends',
+                                    inputOptions: {
+                                        type: 'input'
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ];
+
+                vm.originalFields = angular.copy(vm.fields);
+
+                function onSubmit() {
+                    console.log("Form Submitted");
+                    console.log(vm.model);
+                }
+            });
+
+        })();
+        </script>
+    </body>
+
+    <!-- Custom Templates  -->
+    <script type="text/ng-template" id="multiInput.html">
+        <div>
+            <div class="clearfix">
+                <div class="row"
+                style="margin-bottom:14px"
+                ng-repeat="item in model[options.key] track by $index"
+                ng-init="itemOptions = copyItemOptions()">
+                <formly-field class="no-padding col-xs-10"
+                options="itemOptions"
+                model="model[options.key]"
+                form="form"
+                index="$index">
+            </formly-field>
+            <div class="col-xs-2" style="margin-top:6px">
+                <a ng-click="model[options.key].splice($index, 1)">
+                    x Remove
+                </a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button type="button" class="btn btn-success btn-sm" ng-click="model[options.key].push('')">Add</button>
+    </div>
+</div>
+</script>
+</html>
