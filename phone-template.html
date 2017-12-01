@@ -14,7 +14,7 @@
         <script src="//npmcdn.com/angular-formly@latest/dist/formly.js"></script>
         <!-- This is the current state of master for the bootstrap templates -->
         <script src="//npmcdn.com/angular-formly-templates-bootstrap@latest/dist/angular-formly-templates-bootstrap.js"></script>
-
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-mask/1.8.7/mask.js"></script>
         <style>
         body {
             margin: 20px
@@ -45,13 +45,13 @@
         (function() {
             'use strict';
 
-            var app = angular.module('formlyTemplate', ['formly', 'formlyBootstrap', 'ui.bootstrap'], function config(formlyConfigProvider) {
+            var app = angular.module('formlyTemplate', ['formly', 'formlyBootstrap', 'ui.bootstrap', 'ui.mask'], function config(formlyConfigProvider) {
 
                 formlyConfigProvider.setType([
                     {
-                        name: 'inlineRadio',
-                        extends: 'radio',
-                        templateUrl: "inline-radio.html",
+                        name: 'phone',
+                        extends: 'input',
+                        templateUrl: "phone.html",
                     }
                 ]);
 
@@ -62,7 +62,7 @@
 
                 vm.onSubmit = onSubmit;
 
-                vm.template = 'Inline-radio';
+                vm.template = 'Phone Number';
 
                 vm.env = {
                     angularVersion: angular.version.full,
@@ -73,17 +73,18 @@
 
                 vm.fields = [
                     {
-                        key: 'radio1',
-                        type: 'inlineRadio',
-                        defaultValue: 'no',
-                        templateOptions:{
-                            label: 'Please Select One:',
-                            options: [
-                                {name: 'Yes', value: 'yes'},
-                                {name: 'No', value: 'no'},
-                                {name: 'Maybe', value: 'maybe'}
-                            ]
-                        }
+                        className: 'row',
+                        fieldGroup: [
+                            {
+                                className: 'col-md-6',
+                                key: 'phone1',
+                                type: 'phone',
+                                templateOptions: {
+                                    label: 'Phone Number'
+                                }
+
+                            }
+                        ]
                     }
                 ];
 
@@ -100,16 +101,19 @@
     </body>
 
     <!-- Custom Templates  -->
-    <script type="text/ng-template" id="inline-radio.html">
-        <div class="radio-group">
-            <label ng-repeat="(key, option) in to.options" class="radio-inline">
-                <input type="radio"
-                id="{{id + '_'+ $index}}"
-                tabindex="0"
-                ng-value="option[to.valueProp || 'value']"
-                ng-model="model[options.key]">
-                {{option[to.labelProp || 'name']}}
-            </label>
+    <script type="text/ng-template" id="phone.html">
+        <div class="form-group">
+                <div>
+                    <input type="text"
+                    id="{{id + '_'+ $index}}"
+                    ng-value="option[to.valueProp || 'value']"
+                    ng-model="model[options.key]"
+                    ng-model="vm.phone1"
+                    class="form-control"
+                    ui-mask="(999) 999-9999"
+                    ui-mask-placeholder
+                    ui-mask-placeholder-char="_"/>
+                </div>
         </div>
     </script>
 </html>
